@@ -1,4 +1,7 @@
-//package com.shu.action;
+//package com.shu.view;
+//
+//import com.shu.dao.UserDao;
+//import com.shu.entity.UsersEntity;
 //
 //import java.awt.BorderLayout;
 //import java.awt.Font;
@@ -14,8 +17,6 @@
 //import javax.swing.JPasswordField;
 //import javax.swing.JTextField;
 //import javax.swing.SwingConstants;
-//import com.shu.DAO.UserDAO;
-//import com.shu.entity.User;
 //
 //
 ///*登录窗体*/
@@ -26,15 +27,14 @@
 //    private JButton confirmJB,resetJB;
 //    private JTextField usernameJTF;
 //    private JPasswordField pwdJPF;
-//    private static User user;
+//    private static UsersEntity user;
 //    Font f1=new Font("黑体", Font.BOLD, 32);
 //    //此内部类需要放到下面的构造方法之上，否则，对象usernameJTF不识别
 //    class LoginAction implements ActionListener {
 //        //如果用户名和密码都不为空
 //        public void actionPerformed(final ActionEvent e) {//登录按钮的时间监听器类
 //            if (!"".equals(usernameJTF.getText()) && !"".equals(new String(pwdJPF.getPassword()))) {
-//                user = UserDAO.check(usernameJTF.getText(), new String(pwdJPF.getPassword()));
-//                if (user.getName() != null) {//从数据库中返回的用户名不为空（存在该用户）
+//                if (UserDao.check(usernameJTF.getText(), new String(pwdJPF.getPassword()))) {//从数据库中返回的用户名不为空（存在该用户）
 //                    try {
 //
 //                        MainView frame = new MainView();//登录成功，运行主界面
@@ -106,10 +106,10 @@
 //        this.setVisible(true);
 //        setResizable(false);//取消最大化
 //    }
-//    public static void setUser(User user) {
+//    public static void setUser(UsersEntity user) {
 //        Login.user = user;
 //    }
-//    public static User getUser() {
+//    public static UsersEntity getUser() {
 //        return user;
 //    }
 //    public static void main(String[] args) {

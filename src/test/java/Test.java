@@ -11,6 +11,6 @@ public class Test {
     @org.junit.Test
     public void userTest(){
         UserDao userDao = new UserDao();
-        System.out.println(userDao.selectById(1));
+        System.out.println(userDao.selectById(10));
     }
 }

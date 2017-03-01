@@ -3,7 +3,7 @@ package com.shu.entity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by Dell on 2017/2/27.

@@ -1,4 +1,4 @@
-//package com.shu.action;
+//package com.shu.view;
 //import java.awt.BorderLayout;
 //import java.awt.GridLayout;
 //import java.awt.Toolkit;
