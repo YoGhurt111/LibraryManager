@@ -17,5 +17,6 @@
     <mapping class="com.shu.entity.BooktypeEntity"/>
     <mapping class="com.shu.entity.ReaderEntity"/>
     <mapping class="com.shu.entity.ReadertypeEntity"/>
+    <mapping class="com.shu.entity.BorrowbookEntity"/>
   </session-factory>
 </hibernate-configuration>

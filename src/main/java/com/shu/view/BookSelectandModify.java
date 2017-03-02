@@ -1,7 +1,12 @@
 package com.shu.view;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.shu.dao.BookDao;
+import com.shu.dao.BookTypeDao;
 import com.shu.entity.BookEntity;
+import com.shu.entity.BooktypeEntity;
+import org.json.JSONObject;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -9,7 +14,10 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -66,29 +74,31 @@ public class BookSelectandModify extends JFrame {
 	class SelectAction implements ActionListener{
 		public void actionPerformed(ActionEvent arg0) {
 			String name = (String) choice.getSelectedItem();
-            List<BookEntity> bookList =
 			if (name.equals("ISBN")) {
-				Object[][] results = getSelect(BookDao.selectById(selectJTF.getText().trim()));
+				Gson gson = new Gson();
+				BookEntity book = gson.fromJson(BookDao.selectById(selectJTF.getText().trim()),BookEntity.class);
+                List<BookEntity> bookList = new ArrayList<BookEntity>();
+				bookList.add(book);
+				Object[][] results = getSelect(bookList);
 				table_1 = new JTable(results, booksearch);
 				jscrollPane.setViewportView(table_1);
 			} else if (name.equals("图书名称")) {
-
-				Object[][] results = getSelect(BookDao.selectBookByName(selectJTF.getText()));
+				Object[][] results = getSelect(BookDao.selectByName(selectJTF.getText()));
 				table_1 = new JTable(results, booksearch);
 				jscrollPane.setViewportView(table_1);
 			}else if (name.equals("图书类别")) {
 
-				Object[][] results = getSelect(BookDao.selectBookByType(selectJTF.getText()));
+				Object[][] results = getSelect(BookDao.selectByType(selectJTF.getText()));
 				table_1 = new JTable(results, booksearch);
 				jscrollPane.setViewportView(table_1);
 			}else if (name.equals("作者")) {
 
-				Object[][] results = getSelect(BookDao.selectBookByAuthor(selectJTF.getText()));
+				Object[][] results = getSelect(BookDao.selectByAuthor(selectJTF.getText()));
 				table_1 = new JTable(results, booksearch);
 				jscrollPane.setViewportView(table_1);
 			}else if (name.equals("出版社")) {
 
-				Object[][] results = getSelect(BookDao.selectBookByPublish(selectJTF.getText()));
+				Object[][] results = getSelect(BookDao.selectByPublish(selectJTF.getText()));
 				table_1 = new JTable(results, booksearch);
 				jscrollPane.setViewportView(table_1);
 			}
@@ -96,9 +106,10 @@ public class BookSelectandModify extends JFrame {
 	}
 	class ISBNAction implements ActionListener{
 		public void actionPerformed(ActionEvent arg0) {
-			List<Book> list=BookDao.selectBookByISBN(ISBNJTF.getText().trim());
+			List<BookEntity> list = new ArrayList<BookEntity>();
+					BookDao.selectById(ISBNJTF.getText().trim());
 			for (int i = 0; i < list.size(); i++) {
-				Book book = list.get(i);
+				BookEntity book = list.get(i);
 				booktypeJCB.setSelectedItem(book.getTypeid());
 				booknameJTF.setText(book.getBookname());
 				authorJTF.setText(book.getAuthor());
@@ -120,10 +131,16 @@ public class BookSelectandModify extends JFrame {
 			String bookName = booknameJTF.getText().trim();
 			String booktype=(String)booktypeJCB.getSelectedItem();
 			String publish = publishJTF.getText().trim();
-			String publishdate = publishdateJTF.getText().trim();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+			Date publishdate = null;
+			try {
+				publishdate = sdf.parse(publishdateJTF.getText().trim());
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
 			Integer printtime =Integer.parseInt(printtimeJTF.getText().trim());
 			Double unitprice = Double.parseDouble(unitpriceJTF.getText().trim());
-			int i = BookDao.updatebook(ISBN,booktype,bookName, author, publish, publishdate, printtime, unitprice);
+			int i = BookDao.update(ISBN,booktype,bookName, author, publish, publishdate, printtime, unitprice);
 			System.out.println(i);
 			if (i == 1) {
 				JOptionPane.showMessageDialog(null, "修改成功");
@@ -160,7 +177,7 @@ public class BookSelectandModify extends JFrame {
 		//查询结果面板
 		final JPanel selectpanel_result = new JPanel();
 		jscrollPane = new JScrollPane();
-		Object[][] results = getSelect(BookDao.selectBook());
+		Object[][] results = getSelect(BookDao.selectAll());
 		String[] booksearch = { "编号", "分类", "名称", "作者", "出版社", "出版日期", "出版次数", "单价" };
 		table_1 = new JTable(results, booksearch);
 		jscrollPane.setViewportView(table_1);
@@ -208,10 +225,10 @@ public class BookSelectandModify extends JFrame {
 		booktypeJCB = new JComboBox();
 		booktypeModel = (DefaultComboBoxModel) booktypeJCB.getModel();
 		// 从数据库中取出图书类别
-		List<BookType> list = BookTypeDao.selectBookType();
+		List<BooktypeEntity> list = BookTypeDao.selectAll();
 		for (int i = 0; i < list.size(); i++) {
-			BookType bt = list.get(i);
-			booktypeModel.addElement(bt.gettypename());
+			BooktypeEntity bt = list.get(i);
+			booktypeModel.addElement(bt.getTypename());
 		}
 		bookJP.add(booktypeJCB);
 

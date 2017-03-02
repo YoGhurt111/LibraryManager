@@ -2,6 +2,7 @@ package com.shu.dao;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.shu.entity.BooktypeEntity;
 import com.shu.entity.ReaderEntity;
 import com.shu.entity.UsersEntity;
 import com.shu.utils.HibernateUtil;
@@ -30,9 +31,18 @@ public class UserDao {
     public static List<UsersEntity> selectAll(){
         session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        List userList = session.createQuery("select u from UsersEntity as u ").list();
+        List<UsersEntity> userList = session.createQuery("select u from UsersEntity as u ").list();
         transaction.commit();
         return userList;
+    }
+
+    public static UsersEntity selectByName(String name){
+        session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        UsersEntity user = (UsersEntity) session.createQuery("select u from UsersEntity as u where name=?")
+                .setParameter(0, name).list().get(0);
+        transaction.commit();
+        return user;
     }
 
     public static boolean check(String userName, String password){
@@ -40,10 +50,54 @@ public class UserDao {
         UsersEntity user = new UsersEntity();
         for(int i=0; i<userList.size(); i++){
             user = userList.get(i);
-            if (user.getName() == userName && user.getPassword() == password){
+            if ((user.getName().equals(userName)) && (user.getPassword().equals(password))){
                 return true;
             }
         }
         return false;
     }
+
+    public static int insert(UsersEntity user){
+        session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.save(user);
+            transaction.commit();
+            return 1;
+        }
+        catch (Exception e){
+            return 0;
+        }
+    }
+
+    public static int deleteById(int id){
+        session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            int i = session.createQuery("delete from UsersEntity where id = ?")
+                    .setParameter(0, id).executeUpdate();
+            transaction.commit();
+            return 1;
+        }
+        catch (Exception e){
+            return 0;
+        }
+    }
+
+    public static int updateUserPWD(int id, String pwd){
+        Gson gson = new Gson();
+        UsersEntity user = gson.fromJson(selectById(id), UsersEntity.class);
+        session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        user.setPassword(pwd);
+        try {
+            session.update(user);
+            transaction.commit();
+            return 1;
+        }
+        catch (Exception e){
+            return 0;
+        }
+    }
+
 }
