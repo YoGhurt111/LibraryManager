@@ -21,7 +21,7 @@ public class Index extends JFrame implements Runnable{
 	public Index()
 	{
 		//创建标签,并在标签上放置一张图片
-		jl1=new JLabel(new ImageIcon("img/library.jpg"));
+		jl1=new JLabel(new ImageIcon("shu1.jpg"));
 
 		//创建进度条
 		jpb=new JProgressBar();
@@ -36,7 +36,7 @@ public class Index extends JFrame implements Runnable{
 		this.add(jpb,BorderLayout.SOUTH);
 
 		//设置窗体属性
-		this.setSize(725,337);
+		this.setSize(600,337);
 		//设置窗体显示的位置
 		width=Toolkit.getDefaultToolkit().getScreenSize().width;
 		height=Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -53,7 +53,7 @@ public class Index extends JFrame implements Runnable{
 		{
 			try {
 				//休眠1秒，再执行
-				Thread.sleep(1000);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -37,9 +37,7 @@ public class ReaderTypeManage extends JFrame {
     private JTextField typeJTF,idJTF,nameJTF,numJTF,limitJTF;
     private JTable table;
     private JScrollPane scrollPane;
-
     private String[] readertype = { "读者类型编号", "读者类型名称", "可借图书数量", "可借图书期限" };
-    //private DefaultComboBoxModel ReaderTypeModel;
     private DefaultTableModel model;
 
     private Object[][] getSelect(List<ReadertypeEntity> list) {
@@ -54,9 +52,6 @@ public class ReaderTypeManage extends JFrame {
         return results;
     }
 
-    /**
-     * Create the frame
-     */
     public ReaderTypeManage() {
         super();
         setTitle("读者类型管理");
@@ -81,15 +76,13 @@ public class ReaderTypeManage extends JFrame {
         //查询结果面板
         final JPanel selectPanel_result = new JPanel();
         scrollPane = new JScrollPane();
-        final DefaultTableModel model = new DefaultTableModel();
+//        final DefaultTableModel model = new DefaultTableModel();
         Object[][] results = getSelect(ReaderTypeDao.selectAll());
         table = new JTable(results, readertype);
-
         scrollPane.setViewportView(table);
         //数据显示随表格大小变化
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         table.addMouseListener(new TableListener());
-
         //显示边框
         scrollPane.setPreferredSize(new Dimension(400, 150));
         //不显示边框
@@ -187,6 +180,7 @@ public class ReaderTypeManage extends JFrame {
             if (i == 1) {
                 JOptionPane.showMessageDialog(null, "添加成功");
                 //更新表中数据
+                setVisible(false);
                 new ReaderTypeManage();
             }
         }
@@ -215,6 +209,7 @@ public class ReaderTypeManage extends JFrame {
             if (i == 1) {
                 JOptionPane.showMessageDialog(null, "修改成功");
                 //更新表中数据
+                setVisible(false);
                 new ReaderTypeManage();
             }
         }
@@ -226,6 +221,7 @@ public class ReaderTypeManage extends JFrame {
             if (i == 1) {
                 JOptionPane.showMessageDialog(null, "删除成功");
                 //更新表中数据
+                setVisible(false);
                 new ReaderTypeManage();
             }
         }

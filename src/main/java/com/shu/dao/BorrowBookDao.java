@@ -4,6 +4,7 @@ package com.shu.dao;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.shu.entity.BorrowbookEntity;
+import com.shu.entity.ReaderEntity;
 import com.shu.entity.UsersEntity;
 import com.shu.utils.HibernateUtil;
 import org.hibernate.Session;
@@ -50,6 +51,24 @@ public class BorrowBookDao {
         List<BorrowbookEntity> bbList = session.createQuery("select bb from BorrowbookEntity as bb where readerid=?")
                 .setParameter(0, id)
                 .list();
+        transaction.commit();
+        return bbList;
+    }
+
+    public static List<BorrowbookEntity> selectByIsbn(String isbn){
+        session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        List<BorrowbookEntity> bbList = session.createQuery("select bb from BorrowbookEntity as bb where isbn=?")
+                .setParameter(0, isbn)
+                .list();
+        transaction.commit();
+        return bbList;
+    }
+
+    public static List<BorrowbookEntity> selectAll(){
+        session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        List bbList= session.createQuery("select bb from BorrowbookEntity as bb ").list();
         transaction.commit();
         return bbList;
     }

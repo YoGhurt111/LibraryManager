@@ -5,7 +5,7 @@ import com.shu.dao.ReaderDao;
 import com.shu.dao.ReaderTypeDao;
 import com.shu.entity.ReaderEntity;
 import com.shu.entity.ReadertypeEntity;
-
+import java.text.DateFormat;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -20,20 +20,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import javax.swing.*;
 import javax.swing.JScrollPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -43,19 +31,19 @@ import javax.swing.table.DefaultTableModel;
 public class ReaderSelectandModify extends JFrame{
 	private ButtonGroup buttonGroup = new ButtonGroup();
 	private JLabel IDJL,typeJL,readerNameJL,sexJL,phoneJL,deptJL,ageJL,regJL;
-	private JTextField select_conditionJTF,IDJTF,readerNameJTF,phoneJTF,deptJTF,ageJTF,regJTF;
+	private JTextField select_conditionJTF,IDJTF,readerNameJTF,phoneJTF,deptJTF,ageJTF;
 	private JComboBox conditionJCB,readertypeJCB;
 	private JScrollPane jscrollPane;
 	private DefaultComboBoxModel readertypeModel;
 	final JRadioButton radioButton1,radioButton2;
 	private JTable jtable;
+	private JFormattedTextField regtime;
 
 	private String[] readersearch = { "编号", "类型", "姓名","年龄", "性别", "电话", "系部", "注册日期" };
 	private Object[][] getSelect(List<ReaderEntity> list) {
 		Object[][] results = new Object[list.size()][readersearch.length];
 		for (int i = 0; i < list.size(); i++) {
 			ReaderEntity reader = list.get(i);
-
 			results[i][0] = reader.getReaderid();
 			results[i][1] = reader.getType();
 			results[i][2] = reader.getName();
@@ -139,7 +127,7 @@ public class ReaderSelectandModify extends JFrame{
 		//下拉列表
 		readertypeJCB = new JComboBox();
 		readertypeModel = (DefaultComboBoxModel) readertypeJCB.getModel();
-		// 从数据库中取出图书类别
+		// 从数据库中取出reader类别
 		List<ReadertypeEntity> list = ReaderTypeDao.selectAll();
 		for (int i = 0; i < list.size(); i++) {
 			ReadertypeEntity rt = list.get(i);
@@ -193,11 +181,10 @@ public class ReaderSelectandModify extends JFrame{
 		regJL=new JLabel("注册日期：");
 		regJL.setHorizontalAlignment(SwingConstants.CENTER);
 		readerUpdPanel.add(regJL);
-		regJTF=new JTextField();
-		/*regtime = new JFormattedTextField(DateFormat.getDateInstance());
+		regtime = new JFormattedTextField(DateFormat.getDateInstance());
 	    regtime.setValue(new java.util.Date());
-	    regtime.addKeyListener(new DateListener());*/
-		readerUpdPanel.add(regJTF);
+//	    regtime.addKeyListener(new DateListener());
+		readerUpdPanel.add(regtime);
 		//登录取消按钮面板设计
 		final JPanel buttonPanel=new JPanel();//修改按钮面板
 		JButton modifyButton=new JButton("修改");
@@ -229,21 +216,18 @@ public class ReaderSelectandModify extends JFrame{
 				jtable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 				jtable.addMouseListener(new TableListener());
 			} else if (name.equals("姓名")) {
-
 				Object[][] results = getSelect(ReaderDao.selectByName(select_conditionJTF.getText().trim()));
 				jtable = new JTable(results, readersearch);
 				jscrollPane.setViewportView(jtable);
 				jtable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 				jtable.addMouseListener(new TableListener());
 			}else if (name.equals("类型")) {
-
 				Object[][] results = getSelect(ReaderDao.selectByType(Integer.parseInt(select_conditionJTF.getText().trim())));
 				jtable = new JTable(results, readersearch);
 				jscrollPane.setViewportView(jtable);
 				jtable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 				jtable.addMouseListener(new TableListener());
 			}else if (name.equals("系部")) {
-
 				Object[][] results = getSelect(ReaderDao.selectByDept(select_conditionJTF.getText().trim()));
 				jtable = new JTable(results, readersearch);
 				jscrollPane.setViewportView(jtable);
@@ -267,7 +251,7 @@ public class ReaderSelectandModify extends JFrame{
 				radioButton2.setSelected(true);
 			phoneJTF.setText(jtable.getValueAt(selRow, 5).toString().trim());
 			deptJTF.setText(jtable.getValueAt(selRow, 6).toString().trim());
-			regJTF.setText(jtable.getValueAt(selRow, 7).toString().trim());
+			regtime.setText(jtable.getValueAt(selRow, 7).toString().trim());
 
 		}
 	}
@@ -294,7 +278,7 @@ public class ReaderSelectandModify extends JFrame{
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
 			Date regdate = null;
 			try {
-				regdate = sdf.parse(regJTF.getText().trim());
+				regdate = sdf.parse(regtime.getText().trim());
 			} catch (ParseException e1) {
 				e1.printStackTrace();
 			}

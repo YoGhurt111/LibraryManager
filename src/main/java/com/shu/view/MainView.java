@@ -22,7 +22,7 @@ public class MainView extends JFrame {
     private static final long serialVersionUID = 2316762795668645542L;
     private JPanel ReaderManageJP, BookManageJP, BookBorrowJP, baseInfoJP, userManageJP;
     private JLabel ReaderManageJL, BookManageJL, BookBorrowJL, baseInfoJL, userManageJL;
-    private JButton RMTJB, RMCXJB, BMTJB, BMCXJB, BBGJB, BBJJB, BIRCJB, BIBCJB, BIMJB, UMCJB, UMAJB, UMDJB;
+    private JButton RMTJB, RMCXJB, BMTJB, BMCXJB, BBGJB, BBJJB, BIRCJB, BIBCJB, UMCJB, UMAJB, UMDJB;
 
     class BookAddListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -84,11 +84,6 @@ public class MainView extends JFrame {
         }
     }
 
-    class SetfineListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            FineSet fine = new FineSet();
-        }
-    }
 
     class BookReturnListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -168,11 +163,10 @@ public class MainView extends JFrame {
         BIRCJB.addActionListener(new ReaderTypeListener());
         BIBCJB = new JButton("图书类别设置");
         BIBCJB.addActionListener(new BookTypeListener());
-        BIMJB = new JButton("罚金设置");
-        BIMJB.addActionListener(new SetfineListener());
+//        BIMJB = new JButton("罚金设置");
+//        BIMJB.addActionListener(new SetfineListener());
         baseInfoJP.add(BIRCJB);
         baseInfoJP.add(BIBCJB);
-        baseInfoJP.add(BIMJB);
         this.add(baseInfoJP);
         //用户管理面板
         userManageJP = new JPanel();

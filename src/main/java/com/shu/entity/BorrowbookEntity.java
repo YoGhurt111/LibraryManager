@@ -12,7 +12,7 @@ import java.util.Date;
 public class BorrowbookEntity{
     private Date borrowdate;
     private Date returndate;
-    private Double fine;
+//    private Double fine;
     private String readerid;
     private String isbn;
     private int id;
@@ -59,13 +59,13 @@ public class BorrowbookEntity{
         this.returndate = returndate;
     }
 
-    public Double getFine() {
-        return fine;
-    }
-
-    public void setFine(Double fine) {
-        this.fine = fine;
-    }
+//    public Double getFine() {
+//        return fine;
+//    }
+//
+//    public void setFine(Double fine) {
+//        this.fine = fine;
+//    }
 
 
 }
